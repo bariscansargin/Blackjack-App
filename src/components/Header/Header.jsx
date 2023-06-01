@@ -1,11 +1,19 @@
-import React from 'react'
+import React from "react";
+import { useLocation, Link } from "react-router-dom";
 
 const Header = () => {
-  return (
-    <header className='h-24 flex justify-center items-center'>
-      <p className='text-white font-bold text-2xl italic'>BLACKJACK</p>
-    </header>
-  )
-}
+  const location = useLocation();
 
-export default Header
+  return (
+    <header className="h-20 flex flex-col justify-center items-center">
+      <p className="text-white font-bold text-2xl italic">BLACKJACK</p>
+      {location.pathname === "/game" && (
+        <Link to={"/"} className="text-white mt-2">
+          {"<-"}Back to form
+        </Link>
+      )}
+    </header>
+  );
+};
+
+export default Header;

@@ -2,14 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const userInfoSlice = createSlice({
   name: "user-info",
-  initialState: { name: "", deckCount: "" },
+  initialState: { name: "", deckCount: "",},
   reducers: {
     getUserInfo(state, action) {
-      console.log(state);
-      console.log(action);
+      state.name = action.payload.username;
+      state.deckCount = action.payload.deckCount;
+      
     },
   },
 });
 
-export const userInfoActions = userInfoSlice.actions; // Eylem yaratıcısını parçalayın (destructure)
+export const userInfoActions = userInfoSlice.actions;
 export default userInfoSlice.reducer;

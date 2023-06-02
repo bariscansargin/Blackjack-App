@@ -1,6 +1,6 @@
 import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 //PageLayout
 import HomePageLayout from "./pages/HomePageLayout/HomePageLayout";
 //Pages
@@ -19,12 +19,12 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-const queryClient = new QueryClient();
+
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    
       <RouterProvider router={router} />
-    </QueryClientProvider>
+   
   );
 }
 

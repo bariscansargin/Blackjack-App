@@ -4,13 +4,11 @@ const gameInfo = createSlice({
   name: "gameInfo",
   initialState: { userMoney: 0 },
   reducers: {
-    changeMoney(state, action) {
-      state.userMoney += action.payload.value;
+    initialMoney(state, action) {
+      state.userMoney = +action.payload;
     },
   },
 });
 
-
-const gameActions = gameInfo.actions;
+export const gameActions = gameInfo.actions;
 export default gameInfo.reducer;
-

@@ -11,47 +11,65 @@ const GamePage = () => {
   const navigate = useNavigate();
   const { name, deckCount } = useSelector((state) => state.userInfo);
   const { userMoney } = useSelector((state) => state.gameInfo);
-  const [state, setState] = useState({
-    isGameStart: false,
-    deckId: "",
-    dealerDeck: [],
-    userDeck: [],
-    card: {},
-  });
+  //States
+  const [userDeck, setUserDeck] = useState([]);
+  const [dealerDeck, setDealerDeck] = useState([]);
+  const [isGameStart, setIsGameStart] = useState(false);
+  const [deck, setDeck] = useState({ id: "", remaining: 0 });
 
   useEffect(() => {
     if (name === "" || userMoney === 0) {
       navigate("/");
     }
-  });
-
-  async function deckSelector() {
+  }, []);
+  useEffect(() => {
+    if (isGameStart) {
+      starterDecks(deck.id);
+    }
+  }, [isGameStart]);
+  const deckSelector = async () => {
     const res = await axios.get(
       `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${deckCount}`
     );
-    setState({ ...state, deckId: res.data.deck_id, isGameStart: true });
-  }
-  async function drawCard() {
+
+    setIsGameStart(true);
+    setDeck({ id: res.data.deck_id, remaining: res.data.remaining });
+  };
+  const starterDecks = async (deckId) => {
     const res = await axios.get(
-      `https://deckofcardsapi.com/api/deck/${state.deckId}/draw/?count=1`
+      `https://deckofcardsapi.com/api/deck/${deckId}/draw?count=4`
     );
 
-    return setState({
-      ...state,
-      card: { suit: res.data.cards[0].suit, value: res.data.cards[0].value },
+    setDeck((currDeck) => {
+      return { ...currDeck, remaining: res.data.remaining };
     });
-  }
-  function gameStarter() {
+    setUserDeck([res.data.cards[0], res.data.cards[1]]);
+    setDealerDeck([res.data.cards[2], res.data.cards[3]]);
+  };
+
+  async function gameStarter() {
     deckSelector();
   }
-
+  console.log(dealerDeck);
   return (
     <main className="flex-grow flex flex-col items-center  justify-center min-h-full">
-      <div className="flex h-36 items-center justify-center">
+      <div className="flex h-36 items-center justify-center flex-col">
+        <p className="text-white">Card Remaining: {deck.remaining}</p>
         <p className="text-white">DEALER</p>
       </div>
+      <div className="flex">
+        {dealerDeck.map((card, idx) => {
+          return (
+            <PlayingCard
+              key={idx}
+              suit={card.suit}
+              value={card.value}
+            ></PlayingCard>
+          );
+        })}
+      </div>
       <div className="flex-grow  w-full flex justify-center items-center">
-        {!state.isGameStart && (
+        {!isGameStart && (
           <div className="flex flex-col justify-center items-center">
             <p className="italic text-lg font-bold text-red-600 mb-4">
               Press START button.
@@ -68,13 +86,16 @@ const GamePage = () => {
             </ButtonComponent>
           </div>
         )}
-        {state.isGameStart && (
-          <PlayingCard suit={state.card.suit} value={state.card.value} />
-        )}
+        {isGameStart && <div>BAŞLADI</div>}
       </div>
-      <div className="flex h-36 items-start justify-center flex-col">
-        <div>
-          <button onClick={drawCard}>REFETCH</button>
+
+      <div className="flex h-36 flex-col ">
+        <div className="flex">
+          {userDeck.map((card, idx) => {
+            return (
+              <PlayingCard key={idx} suit={card.suit} value={card.value} />
+            );
+          })}
         </div>
         <p className="text-white">PLAYER : {name}</p>
         <p className="text-white">Money : {userMoney} $</p>

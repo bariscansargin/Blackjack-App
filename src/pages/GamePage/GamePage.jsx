@@ -16,6 +16,7 @@ const GamePage = () => {
     deckId: "",
     dealerDeck: [],
     userDeck: [],
+    card: {},
   });
 
   useEffect(() => {
@@ -24,9 +25,6 @@ const GamePage = () => {
     }
   });
 
-  useEffect(() => {
-    console.log(state.deckId);
-  }, [state.deckId]);
   async function deckSelector() {
     const res = await axios.get(
       `https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=${deckCount}`
@@ -37,11 +35,11 @@ const GamePage = () => {
     const res = await axios.get(
       `https://deckofcardsapi.com/api/deck/${state.deckId}/draw/?count=1`
     );
-    console.log(
-      "Card =" + res.data.cards[0].value,
-      "Value = " + getCardValue(res.data.cards[0].value)
-    );
-    return res.data;
+
+    return setState({
+      ...state,
+      card: { suit: res.data.cards[0].suit, value: res.data.cards[0].value },
+    });
   }
   function gameStarter() {
     deckSelector();
@@ -70,7 +68,9 @@ const GamePage = () => {
             </ButtonComponent>
           </div>
         )}
-        {console.log()}
+        {state.isGameStart && (
+          <PlayingCard suit={state.card.suit} value={state.card.value} />
+        )}
       </div>
       <div className="flex h-36 items-start justify-center flex-col">
         <div>

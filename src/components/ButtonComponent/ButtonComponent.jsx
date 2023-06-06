@@ -6,11 +6,10 @@ const ButtonComponent = ({
   children,
   position,
   clickHandler,
-  disabled
   
 }) => {
   const buttonStyles = cn(
-    "border-none outline-none py-1 px-2 rounded-lg text-white cursor-pointer disabled:hidden " +
+    "border-none outline-none py-1 px-2 rounded-lg text-white cursor-pointer " +
       position,
     {
       "bg-green-600 hover:bg-green-500 ": value === "start",
@@ -24,7 +23,6 @@ const ButtonComponent = ({
         clickHandler(e, value);
       }}
       className={buttonStyles}
-      disabled= {disabled}
     >
       {children}
     </button>

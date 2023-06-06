@@ -7,6 +7,9 @@ const gameInfo = createSlice({
     initialMoney(state, action) {
       state.userMoney = +action.payload;
     },
+    exchangeMoney(state, action) {
+      state.userMoney += +action.payload;
+    },
   },
 });
 

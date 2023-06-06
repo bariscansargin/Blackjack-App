@@ -8,7 +8,7 @@ const Header = () => {
     <header className="h-20 flex flex-col justify-center items-center">
       <p className="text-white font-bold text-2xl italic">BLACKJACK</p>
       {location.pathname === "/game" && (
-        <Link to={"/"} className="text-white mt-2 mb-4">
+        <Link to={"/"} className="text-white mt-2 mb-4 hover:text-red-400">
           {"<-"}Back to form
         </Link>
       )}

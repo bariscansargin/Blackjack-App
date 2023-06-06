@@ -10,6 +10,9 @@ import PlayingCard from "../../components/PlayingCard/PlayingCard";
 import Scoreboard from "../../components/Scoreboard/Scoreboard";
 //Constants
 import { DEALER_MUST_HIT_AT_UNTIL, BLACKJACK } from "../../../lib/constants";
+// Utils
+import { getDeckValue } from "../../utils/game-functions";
+
 const GamePage = () => {
   //Hooks
   const navigate = useNavigate();
@@ -46,18 +49,22 @@ const GamePage = () => {
   }, [isGameStart]);
 
   useEffect(() => {
-    if (userDeck.length > 0) {
-      const userDeckValue = userDeck.reduce((acc, card) => {
-        acc += getCardValue(card.value);
-        return acc;
-      }, 0);
-      setUserDeckScore(userDeckValue);
-    }
+    if (userDeck.length < 0) return;
+
+    const userDeckValue = userDeck.reduce((acc, card) => {
+      acc += getCardValue(card.value);
+      return acc;
+    }, 0);
+    setUserDeckScore(userDeckValue);
   }, [userDeck]);
 
   useEffect(() => {
     if (userDeckScore > BLACKJACK) {
-      setDealerTurn(true);
+      const deckValue = getDeckValue(userDeck);
+      setUserDeckScore(deckValue);
+      if (userDeckScore > BLACKJACK) {
+        setDealerTurn(true);
+      }
     }
   }, [userDeckScore]);
   useEffect(() => {
@@ -195,14 +202,14 @@ const GamePage = () => {
   }
 
   return (
-    <main className={"flex flex-col items-center  justify-center flex-grow"}>
+    <main className={"flex flex-col items-center  justify-center grow"}>
       {isGameStart && (
         <>
           <div className="flex items-center justify-center flex-col">
             <p className="text-white">Card Remaining: {deck.remaining}</p>
             <p className="text-white mb-4">DEALER</p>
           </div>
-          <div className="flex w-screen items-center justify-center flex-wrap">
+          <div className="flex w-screen items-center justify-center flex-wrap lg:w-[700px]">
             {dealerDeck.map((card, idx) => {
               return (
                 <PlayingCard
@@ -295,17 +302,24 @@ const GamePage = () => {
                 )}
               </div>
               <p className="text-white text-center px-2">{infoMessage}</p>
-              {validMoney && <Scoreboard type={"Users"} deckValue={userDeckScore} />}
+              {validMoney && (
+                <Scoreboard type={"Users"} deckValue={userDeckScore} />
+              )}
             </div>
           </div>
         )}
       </div>
 
       <div className="flex h-36 flex-col ">
-        <div className="w-screen flex items-center justify-center flex-wrap">
+        <div className="w-screen flex items-center justify-center flex-wrap lg:w-[700px]">
           {userDeck.map((card, idx) => {
             return (
-              <PlayingCard key={idx} suit={card.suit} value={card.value} hidden={!validMoney} />
+              <PlayingCard
+                key={idx}
+                suit={card.suit}
+                value={card.value}
+                hidden={!validMoney}
+              />
             );
           })}
         </div>

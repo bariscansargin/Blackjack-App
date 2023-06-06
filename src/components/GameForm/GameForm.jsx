@@ -55,7 +55,7 @@ const GameForm = () => {
   }
 
   return (
-    <form className="px-4 py-8 bg-green-900 rounded-xl border border-green-300 shadow-md shadow-green-300">
+    <form className="px-4 py-8 bg-green-900 rounded-xl border border-green-300 shadow-md shadow-green-300 mb-2">
       <div className="flex flex-col">
         <label htmlFor="username" className="text-white mb-2 text-lg">
           Name

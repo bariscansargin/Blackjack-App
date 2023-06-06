@@ -7,7 +7,7 @@ import { getCardValue } from "../../utils/game-functions";
 //Components
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import PlayingCard from "../../components/PlayingCard/PlayingCard";
-import Scoreboard from "../../Scoreboard/Scoreboard";
+import Scoreboard from "../../components/Scoreboard/Scoreboard";
 //Constants
 import { DEALER_MUST_HIT_AT_UNTIL, BLACKJACK } from "../../../lib/constants";
 const GamePage = () => {
@@ -77,7 +77,6 @@ const GamePage = () => {
     if (!dealerTurn) return;
     if (doesDealerWin()) {
       setInfoMessage(`Dealer won ! You lost ${betAmount} $`);
-      dispatch(gameActions.exchangeMoney(betAmount));
     } else if (isItDraw()) {
       setInfoMessage("DRAW");
     } else if (doesUserWin()) {
@@ -145,6 +144,7 @@ const GamePage = () => {
           " $"
       );
       setValidMoney(true);
+      dispatch(gameActions.exchangeMoney(-betAmount));
     }
   }
 
@@ -209,7 +209,7 @@ const GamePage = () => {
                   key={idx}
                   suit={card.suit}
                   value={card.value}
-                  hidden={idx === 1 && !dealerTurn}
+                  hidden={(idx === 1 && !dealerTurn) || !validMoney}
                 />
               );
             })}
@@ -289,14 +289,13 @@ const GamePage = () => {
                     value={"hit"}
                     clickHandler={resetGame}
                     position={"mr-2 mb-2"}
-                    disabled={gameOver}
                   >
                     PLAY AGAIN
                   </ButtonComponent>
                 )}
               </div>
               <p className="text-white text-center px-2">{infoMessage}</p>
-              <Scoreboard type={"Users"} deckValue={userDeckScore} />
+              {validMoney && <Scoreboard type={"Users"} deckValue={userDeckScore} />}
             </div>
           </div>
         )}
@@ -306,7 +305,7 @@ const GamePage = () => {
         <div className="w-screen flex items-center justify-center flex-wrap">
           {userDeck.map((card, idx) => {
             return (
-              <PlayingCard key={idx} suit={card.suit} value={card.value} />
+              <PlayingCard key={idx} suit={card.suit} value={card.value} hidden={!validMoney} />
             );
           })}
         </div>

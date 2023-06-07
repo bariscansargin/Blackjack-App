@@ -95,12 +95,10 @@ const GamePage = () => {
       dealerDeckScore <= BLACKJACK);
 
   const isItDraw = () =>
-    dealerTurn &&
     dealerDeckScore >= DEALER_MUST_HIT_AT_UNTIL &&
     userDeckScore === dealerDeckScore;
 
   const doesUserWin = () =>
-    dealerTurn &&
     (userDeckScore > dealerDeckScore || dealerDeckScore > BLACKJACK) &&
     userDeckScore <= BLACKJACK &&
     dealerDeckScore >= DEALER_MUST_HIT_AT_UNTIL;
@@ -181,7 +179,7 @@ const GamePage = () => {
   }
   function resetGame() {
     if (userMoney < 10) {
-      setInfoMessage("Don't have enough money.")
+      setInfoMessage("Don't have enough money.");
       setTimeout(() => {
         navigate("/");
       }, 700);
@@ -245,7 +243,7 @@ const GamePage = () => {
         {isGameStart && (
           <div className="my-12 flex flex-col items-center justify-center">
             {dealerTurn && (
-              <Scoreboard type={"Dealers"} deckValue={dealerDeckScore} />
+              <Scoreboard type={"Dealer"} deckValue={dealerDeckScore} />
             )}
             <div className="flex">
               {validMoney && !dealerTurn && (
@@ -308,7 +306,7 @@ const GamePage = () => {
               )}
 
               {validMoney && (
-                <Scoreboard type={"Users"} deckValue={userDeckScore} />
+                <Scoreboard type={"User"} deckValue={userDeckScore} />
               )}
             </div>
           </div>

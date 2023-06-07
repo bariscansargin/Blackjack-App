@@ -31,21 +31,17 @@ const InstructivePage = () => {
   };
   const PageWrapper = ({ children }) => {
     return (
-      <div className="flex flex-col items-center justify-center mb-8 text-white">
+      <div className="flex flex-col justify-center mb-8 text-white lg:items-center">
         {children}
       </div>
     );
   };
   const PageTitle = ({ children, position }) => {
-    return (
-      <p className={"text-red-800 font-bold text-center " + position}>
-        {children}
-      </p>
-    );
+    return <p className={"text-red-800 font-bold " + position}>{children}</p>;
   };
   return (
-    <main className="flex-grow flex flex-col items-center justify-start px-4 lg:text-xl">
-      <p className="text-red-800 font-bold text-xl mt-8 text-center mb-4">
+    <main className="flex-grow flex flex-col px-4 lg:text-lg lg:items-center lg:justify-center ">
+      <p className="text-red-800 font-bold text-xl mt-8 mb-4">
         How to play Blackjack Game
       </p>
       {articleNumber === 1 && (
@@ -54,12 +50,6 @@ const InstructivePage = () => {
             {articleNumber}
             {"-) "}Learn the value of the cards.
           </PageTitle>
-
-          <p className="mb-4 lg:px-12">
-            In Blackjack, each card has a value that remains constant throughout
-            the game.The goal is to beat the dealer and also not bust with a 22
-            or more. Here are their values:
-          </p>
 
           <ul className="lg:w-1/2 lg:mt-4">
             <ListItem>Number Cards:</ListItem> The number is the value of the
@@ -81,10 +71,6 @@ const InstructivePage = () => {
             {articleNumber}
             {"-) "}Learn your choices.
           </PageTitle>
-
-          <p className="mb-4">
-            There are two basic options when it's your turn
-          </p>
 
           <ul className="lg:w-1/2">
             <ListItem>Hit:</ListItem> Get another card. You are able to hit
@@ -111,14 +97,6 @@ const InstructivePage = () => {
             {articleNumber}
             {"-) "}Start winning.
           </PageTitle>
-
-          <p className="mb-4 lg:px-16">
-            In order to win, the player has to be closer to 21 than the dealer,
-            without going over. If the player goes over, he has "busted." If
-            it's a tie, it's a "push" -- neither the player nor the house wins.
-            A blackjack is when your starting hand is an ace and 10, or face
-            card.
-          </p>
 
           <ul className="lg:w-1/2">
             <ListItem>The dealer </ListItem> will go around the players until

@@ -9,7 +9,7 @@ const ButtonComponent = ({ value, children, position, clickHandler,disabled}) =>
       "bg-green-600 hover:bg-green-500 ": value === "start",
       "bg-red-600 hover:bg-red-500":
         value === "reset" || value === "stay" || value === "backward",
-      "bg-green-900 hover:bg-green-800": value === "hit" || value === "forward",
+      "bg-green-700 hover:bg-green-800": value === "hit" || value === "forward",
     }
   );
   return (

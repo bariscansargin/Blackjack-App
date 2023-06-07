@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 
 const Scoreboard = ({ deckValue, type }) => {
-  const scorebardClasses = classNames(" text-md italic mt-2", {
+  const scorebardClasses = classNames("text-lg italic mt-1", {
     "text-white": deckValue < 21,
     "text-red-700": deckValue > 21,
     "text-green-300": deckValue === 21,

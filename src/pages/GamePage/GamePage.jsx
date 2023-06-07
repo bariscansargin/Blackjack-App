@@ -32,7 +32,7 @@ const GamePage = () => {
   const [userDeckScore, setUserDeckScore] = useState(0);
   const [dealerDeckScore, setDealerDeckScore] = useState(0);
   const [infoMessage, setInfoMessage] = useState(
-    "Please enter your bet.(Min: 10$)"
+    "Please enter your bet. (Min: 10$)"
   );
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const GamePage = () => {
 
     setDealerTurn(true);
   }, [userDeckScore]);
-  
+
   useEffect(() => {
     if (dealerDeck.length === 0) return;
 
@@ -194,12 +194,14 @@ const GamePage = () => {
   }
 
   return (
-    <main className={"flex flex-col items-center  justify-center grow"}>
+    <main className={"flex flex-col items-center  justify-center grow mb-8"}>
       {isGameStart && (
         <>
           <div className="flex items-center justify-center flex-col">
-            <p className="text-white">Card Remaining: {deck.remaining}</p>
-            <p className="text-white mb-4">DEALER</p>
+            <p className="text-white text-sm italic mb-4">
+              Card Remaining: {deck.remaining}
+            </p>
+            <p className="mb-4 text-red-700 font-bold">DEALER</p>
           </div>
           <div className="flex w-screen items-center justify-center flex-wrap lg:w-[700px]">
             {dealerDeck.map((card, idx) => {
@@ -262,16 +264,18 @@ const GamePage = () => {
               )}
             </div>
             <div className="flex flex-col items-center justify-center">
-              <input
-                placeholder="Enter your bet"
-                type="number"
-                min={10}
-                value={betAmount}
-                className="mr-2 my-2 px-1 py-1 rounded-lg shadow-lg active:outline-cyan-500 border-none active:border-none"
-                onChange={(e) => {
-                  setBetAmount(e.target.value);
-                }}
-              />
+              {!validMoney && (
+                <input
+                  placeholder="Enter your bet"
+                  type="number"
+                  min={10}
+                  value={betAmount}
+                  className="mr-2 my-2 px-1 py-1 rounded-lg shadow-lg active:outline-cyan-500 border-none active:border-none"
+                  onChange={(e) => {
+                    setBetAmount(e.target.value);
+                  }}
+                />
+              )}
               <div className="flex items-center justify-center">
                 {!validMoney && (
                   <ButtonComponent
@@ -282,18 +286,20 @@ const GamePage = () => {
                     BET
                   </ButtonComponent>
                 )}
-
-                {gameOver && (
-                  <ButtonComponent
-                    value={"hit"}
-                    clickHandler={resetGame}
-                    position={"mr-2 mb-2"}
-                  >
-                    PLAY AGAIN
-                  </ButtonComponent>
-                )}
               </div>
-              <p className="text-white text-center px-2">{infoMessage}</p>
+              <div className="w-full py-8 px-4 bg-green-700 rounded-lg shadow-lg my-2 border  ">
+                <p className="text-white text-center">{infoMessage}</p>
+              </div>
+              {gameOver && (
+                <ButtonComponent
+                  value={"hit"}
+                  clickHandler={resetGame}
+                  position={"mr-2 mb-2"}
+                >
+                  PLAY AGAIN
+                </ButtonComponent>
+              )}
+
               {validMoney && (
                 <Scoreboard type={"Users"} deckValue={userDeckScore} />
               )}
@@ -316,8 +322,12 @@ const GamePage = () => {
           })}
         </div>
         <div className="flex flex-col items-center justify-center mt-4">
-          <p className="text-white mt-4">PLAYER : {name}</p>
-          <p className="text-white">Money : {userMoney} $</p>
+          <div className="bg-green-700 rounded-lg shadow-lg shadow-green-700 p-4 flex justify-center flex-col">
+            <p className="text-white mt-4 text-md font-bold">PLAYER : {name}</p>
+            <p className="text-white text-md font-bold">
+              Money : {userMoney} $
+            </p>
+          </div>
         </div>
       </div>
     </main>

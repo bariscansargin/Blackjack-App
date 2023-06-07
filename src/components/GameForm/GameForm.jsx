@@ -12,46 +12,48 @@ const GameForm = () => {
     username: "",
     deckCount: 1,
     initialUserMoney: 10,
+    betValidation: false,
     routeChange: false,
     errors: [],
   });
 
-  useEffect(() => {
-    if (state.initialUserMoney < 10) {
-      setState({ ...state, initialUserMoney: 10 });
-    }
-  });
-
-  function buttonHandler(e, value) {
+  function resetHandler(e) {
     e.preventDefault();
-    if (value === "reset") {
-      return setState({
-        username: "",
-        deckCount: 1,
-        errors: [],
-        routeChange: false,
-        initialUserMoney: 0,
-      });
-    }
+
+    setState({
+      username: "",
+      deckCount: 1,
+      errors: [],
+      routeChange: false,
+      initialUserMoney: 0,
+    });
+    return;
+  }
+  function startHandler(e) {
+    e.preventDefault();
     if (state.username.length < 3) {
       setState({
         ...state,
         errors: [...state.errors, "Username must be at least 3 characters."],
       });
-      return;
+    } else if (state.initialUserMoney < 10) {
+      setState({
+        ...state,
+        errors: [...state.errors, "You should pay at least 10 $"],
+      });
+    } else {
+      dispatch(
+        userInfoActions.getUserInfo({
+          username: state.username,
+          deckCount: state.deckCount,
+        })
+      );
+      dispatch(gameActions.initialMoney(state.initialUserMoney));
+      setState({ ...state, routeChange: true });
+      setTimeout(() => {
+        navigate("/game");
+      }, 1000);
     }
-
-    dispatch(
-      userInfoActions.getUserInfo({
-        username: state.username,
-        deckCount: state.deckCount,
-      })
-    );
-    dispatch(gameActions.initialMoney(state.initialUserMoney));
-    setState({ ...state, routeChange: true });
-    setTimeout(() => {
-      navigate("/game");
-    }, 1000);
   }
 
   return (
@@ -107,7 +109,7 @@ const GameForm = () => {
           <p className="text-sm mt-4 text-white">Game page loading...</p>
         )}
         {state.errors && state.errors.length > 0 && (
-          <div className="flex items-center justify-center">
+          <div className="flex flex-col ">
             {state.errors.map((error, idx) => {
               return (
                 <p className="text-white text-sm mt-4" key={idx}>
@@ -119,12 +121,12 @@ const GameForm = () => {
         )}
 
         <div className="flex justify-center items-center mt-8">
-          <ButtonComponent value={"reset"} clickHandler={buttonHandler}>
+          <ButtonComponent value={"reset"} clickHandler={resetHandler}>
             RESET
           </ButtonComponent>
           <ButtonComponent
             position={"ml-6"}
-            clickHandler={buttonHandler}
+            clickHandler={startHandler}
             value={"start"}
           >
             START

@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { gameActions } from "../../redux/features/game";
-import { getCardValue } from "../../utils/game-functions";
 //Components
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 import PlayingCard from "../../components/PlayingCard/PlayingCard";
@@ -43,38 +42,28 @@ const GamePage = () => {
   }, []);
 
   useEffect(() => {
-    if (isGameStart) {
-      starterDecks(deck.id);
-    }
+    if (!isGameStart) return;
+
+    starterDecks(deck.id);
   }, [isGameStart]);
 
   useEffect(() => {
     if (userDeck.length < 0) return;
 
-    const userDeckValue = userDeck.reduce((acc, card) => {
-      acc += getCardValue(card.value);
-      return acc;
-    }, 0);
-    setUserDeckScore(userDeckValue);
+    setUserDeckScore(getDeckValue(userDeck));
   }, [userDeck]);
 
   useEffect(() => {
-    if (userDeckScore > BLACKJACK) {
-      const deckValue = getDeckValue(userDeck);
-      setUserDeckScore(deckValue);
-      if (userDeckScore > BLACKJACK) {
-        setDealerTurn(true);
-      }
-    }
+    if (userDeckScore <= BLACKJACK) return;
+
+    setDealerTurn(true);
   }, [userDeckScore]);
+  
   useEffect(() => {
-    if (dealerDeck.length > 0) {
-      const dealerDeckValue = dealerDeck.reduce((acc, card) => {
-        acc += getCardValue(card.value);
-        return acc;
-      }, 0);
-      setDealerDeckScore(dealerDeckValue);
-    }
+    if (dealerDeck.length === 0) return;
+
+    setDealerDeckScore(getDeckValue(dealerDeck));
+
     if (dealerDeck.length > 2) {
       setContinueDraw((current) => !current);
     }
@@ -82,6 +71,7 @@ const GamePage = () => {
 
   useEffect(() => {
     if (!dealerTurn) return;
+
     if (doesDealerWin()) {
       setInfoMessage(`Dealer won ! You lost ${betAmount} $`);
     } else if (isItDraw()) {
@@ -97,6 +87,7 @@ const GamePage = () => {
     }
     setGameOver(true);
   }, [dealerTurn, continueDraw]);
+
   const doesDealerWin = () =>
     userDeckScore > BLACKJACK ||
     (userDeckScore < dealerDeckScore &&
@@ -107,6 +98,7 @@ const GamePage = () => {
     dealerTurn &&
     dealerDeckScore >= DEALER_MUST_HIT_AT_UNTIL &&
     userDeckScore === dealerDeckScore;
+
   const doesUserWin = () =>
     dealerTurn &&
     (userDeckScore > dealerDeckScore || dealerDeckScore > BLACKJACK) &&
@@ -157,30 +149,30 @@ const GamePage = () => {
 
   async function hitCard(e) {
     e.preventDefault();
-    if (userDeckScore <= 21) {
-      const res = await axios.get(
-        `https://deckofcardsapi.com/api/deck/${deck.id}/draw?count=1`
-      );
-      setDeck((currDeck) => {
-        return { ...currDeck, remaining: res.data.remaining };
-      });
+    if (userDeckScore > 21) return;
 
-      setUserDeck((currDeck) => [...currDeck, res.data.cards[0]]);
-    }
+    const res = await axios.get(
+      `https://deckofcardsapi.com/api/deck/${deck.id}/draw?count=1`
+    );
+    setDeck((currDeck) => {
+      return { ...currDeck, remaining: res.data.remaining };
+    });
+
+    setUserDeck((currDeck) => [...currDeck, res.data.cards[0]]);
   }
 
   async function dealerDrawCard() {
-    if (dealerDeckScore < 21) {
-      const res = await axios.get(
-        `https://deckofcardsapi.com/api/deck/${deck.id}/draw?count=1`
-      );
+    if (dealerDeckScore > BLACKJACK) return;
 
-      setDeck((currDeck) => {
-        return { ...currDeck, remaining: res.data.remaining };
-      });
+    const res = await axios.get(
+      `https://deckofcardsapi.com/api/deck/${deck.id}/draw?count=1`
+    );
 
-      setDealerDeck((currDeck) => [...currDeck, res.data.cards[0]]);
-    }
+    setDeck((currDeck) => {
+      return { ...currDeck, remaining: res.data.remaining };
+    });
+
+    setDealerDeck((currDeck) => [...currDeck, res.data.cards[0]]);
   }
 
   function dealerTurnHandler() {

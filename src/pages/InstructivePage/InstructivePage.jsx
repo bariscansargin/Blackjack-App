@@ -3,7 +3,9 @@ import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
 
 const InstructivePage = () => {
   const [articleNumber, setArticleNumber] = useState(1);
+
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (articleNumber < 1) {
       setArticleNumber(1);
     }

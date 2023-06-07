@@ -1,2 +1,3 @@
 # Blackjack Game
- Blackjack Game With Public API.
+ Blackjack Game App
+ I used public API (https://deckofcardsapi.com/).

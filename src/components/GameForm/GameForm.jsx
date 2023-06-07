@@ -73,7 +73,7 @@ const GameForm = () => {
       </div>
       <div className="flex flex-col">
         <label htmlFor="money" className="text-white mb-2 text-lg">
-          İnitial Money{" ($)"}
+          Initial Money{" ($)"}
         </label>
         <input
           name="money"

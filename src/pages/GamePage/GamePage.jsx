@@ -76,6 +76,7 @@ const GamePage = () => {
       setInfoMessage(`Dealer won ! You lost ${betAmount} $`);
     } else if (isItDraw()) {
       setInfoMessage("DRAW");
+      dispatch(gameActions.exchangeMoney(betAmount));
     } else if (doesUserWin()) {
       setInfoMessage(`${name} won ${betAmount * 2} $`);
       dispatch(gameActions.exchangeMoney(betAmount * 2));

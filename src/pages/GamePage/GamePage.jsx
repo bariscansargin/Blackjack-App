@@ -194,7 +194,7 @@ const GamePage = () => {
   }
 
   return (
-    <main className={"flex flex-col items-center  justify-center grow mb-8"}>
+    <main className={"flex flex-col items-center  justify-center grow mb-12"}>
       {isGameStart && (
         <>
           <div className="flex items-center justify-center flex-col">
@@ -203,7 +203,7 @@ const GamePage = () => {
             </p>
             <p className="mb-4 text-red-700 font-bold">DEALER</p>
           </div>
-          <div className="flex w-screen items-center justify-center flex-wrap lg:w-[700px]">
+          <div className="flex w-screen justify-center flex-wrap lg:w-[700px]">
             {dealerDeck.map((card, idx) => {
               return (
                 <PlayingCard
@@ -322,7 +322,7 @@ const GamePage = () => {
           })}
         </div>
         <div className="flex flex-col items-center justify-center mt-4">
-          <div className="bg-green-700 rounded-lg shadow-lg shadow-green-700 p-4 flex justify-center flex-col">
+          <div className=" border bg-green-700 rounded-lg shadow-lg shadow-green-700 p-4 flex justify-center flex-col">
             <p className="text-white mt-4 text-md font-bold">PLAYER : {name}</p>
             <p className="text-white text-md font-bold">
               Money : {userMoney} $

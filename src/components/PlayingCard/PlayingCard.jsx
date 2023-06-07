@@ -16,7 +16,7 @@ const PlayingCard = ({ value, suit, hidden }) => {
   return (
     <>
       {!hidden && (
-        <div className="flex flex-col border w-16 bg-white p-1 rounded-md shadow-lg m-2 ">
+        <div className="flex flex-col border w-16 bg-white p-1 rounded-md shadow-lg sm:ml-2 ">
           <div className={"w-full flex justify-start " + cardColor}>
             <p className={cardColor}>{hidden ? "?" : getCardText(value)}</p>
           </div>
@@ -33,7 +33,7 @@ const PlayingCard = ({ value, suit, hidden }) => {
         </div>
       )}
       {hidden && (
-        <div className="flex flex-wrap border w-16 bg-red-700 p-4 rounded-md shadow-lg ml-2">
+        <div className="flex flex-wrap border w-16 bg-red-700 p-4 rounded-md shadow-lg sm:ml-2 ">
           {starsArr.map((star,idx) => {
             return <span key={idx} className="text-white">{star}</span>;
           })}

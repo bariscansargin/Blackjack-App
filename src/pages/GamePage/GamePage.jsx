@@ -180,6 +180,13 @@ const GamePage = () => {
     setInfoMessage("Dealer Turn");
   }
   function resetGame() {
+    if (userMoney < 10) {
+      setInfoMessage("Don't have enough money.")
+      setTimeout(() => {
+        navigate("/");
+      }, 700);
+      return;
+    }
     setIsGameStart(false);
     setDeck({ id: "", remaining: 0 });
     setUserDeck([]);

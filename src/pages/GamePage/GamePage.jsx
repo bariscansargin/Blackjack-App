@@ -209,7 +209,7 @@ const GamePage = () => {
             </p>
             <p className="mb-4 text-red-700 font-bold">DEALER</p>
           </div>
-          <div className="flex w-screen justify-center flex-wrap lg:w-[700px]">
+          <div className="flex w-screen justify-center flex-wrap lg:w-[700px] gap-1">
             {dealerDeck.map((card, idx) => {
               return (
                 <PlayingCard
@@ -315,7 +315,7 @@ const GamePage = () => {
       </div>
 
       <div className="flex h-36 flex-col ">
-        <div className="w-screen flex items-center justify-center flex-wrap lg:w-[700px]">
+        <div className="w-screen flex items-center justify-center flex-wrap lg:w-[700px] gap-1">
           {userDeck.map((card, idx) => {
             return (
               <PlayingCard

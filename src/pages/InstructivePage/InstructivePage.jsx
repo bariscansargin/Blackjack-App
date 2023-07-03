@@ -15,7 +15,7 @@ const InstructivePage = () => {
   }, [articleNumber]);
   function articleHandler(e, value) {
     e.preventDefault();
-    console.log(value);
+
     if (value === "forward") {
       setArticleNumber((currArticle) => currArticle + 1);
       return;
